@@ -2,7 +2,9 @@
 Motion Detection with separate arecord process to capture audio and combine them into single video file
 
 ---- Prereqs - Install motion, arecord, ffmpeg pgrep, pkill ----
-
+```
+sudo apt update && sudo apt install -y motion alsa-utils procps
+```
 Modify the motionaudio.sh 
 1. Update all the variables with your specific configuration
 2. arecord command parameters will need YOUR correct hardware for the microphone input you want to use.
