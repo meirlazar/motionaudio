@@ -12,9 +12,9 @@ voutext=mkv #change this to the video file that will be created by joining the a
 # motion.conf should have the following
 #target_dir /path/to/motion/videos
 #movie_filename %m-%d-%Y_%H:%M:%S
-#on_event_start /bin/bash /etc/motion/motionaudio.sh startaudio %m-%d-%Y_%H:%M:%S
-#on_event_end  /bin/bash /etc/motion/motionaudio.sh stopaudio
-#on_camera_lost /bin/bash /etc/motion/motionaudio.sh enablecam
+#on_event_start /bin/bash /usr/bin/motionaudio.sh startaudio %m-%d-%Y_%H:%M:%S
+#on_event_end  /bin/bash /usr/bin/motionaudio.sh stopaudio
+#on_camera_lost /bin/bash /usr/bin/motionaudio.sh enablecam
 
 
 # check deps
