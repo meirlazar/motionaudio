@@ -46,8 +46,11 @@ enablecam
 
 function stopmotion () {
 # kill motion
-	pgrep -F ${motionpid} 2> /dev/null && sudo pkill -9 -F ${motionpid}
-	pgrep -a -if "motion -c ${motionconf}" && sudo pkill -9 -f "motion -c ${motionconf}"
+	if [[ $(pgrep -F ${motionpid} 2> /dev/null) ]] || [[ $(pgrep -a -if "motion -c ${motionconf}" 2> /dev/null) ]]; then
+        sudo pkill -9 -F ${motionpid} 2> /dev/null || sudo pkill -9 -f "motion -c ${motionconf}" 2> /dev/null
+        else
+        echo "Motion is not running"  
+        fi
 # blacklist the video camera (optional)
 	grep -q "^#blacklist uvcvideo$" /etc/modprobe.d/blacklist.conf && sudo sed -i 's/#blacklist uvcvideo/blacklist uvcvideo/1' /etc/modprobe.d/blacklist.conf
 }
