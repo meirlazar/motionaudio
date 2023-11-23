@@ -113,8 +113,8 @@ return 0
 function StartAudioCapture () {
 #nohup /usr/bin/arecord -f cd -r 22050 -D plughw:2,0 "${mediadir}/${aname}.${aext}" --process-id-file "${mediadir}/${aname}.pid" &
 if [[ -f "${apidfile}" ]]; then StopAudioCapture ; fi
-#nohup /usr/bin/arecord -f S16_LE -c2 -r 8000 -D plughw:${mic} "${mediadir}/${aname}.${aext}" --process-id-file "${apidfile}" > /dev/null 2>&1 &
-/usr/bin/arecord -f S16_LE -c2 -r 8000 -D plughw:"${mic}" "${mediadir}/${aname}.${aext}" --process-id-file "${apidfile}"   # unbcomment for debugging audio capture
+nohup /usr/bin/arecord -f S16_LE -c2 -r 8000 -D plughw:${mic} "${mediadir}/${aname}.${aext}" --process-id-file "${apidfile}" > /dev/null 2>&1 &
+# /usr/bin/arecord -f S16_LE -c2 -r 8000 -D plughw:"${mic}" "${mediadir}/${aname}.${aext}" --process-id-file "${apidfile}"   # unbcomment for debugging audio capture
 }
 
 ########################################################################################################
