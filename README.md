@@ -22,16 +22,16 @@ Then change this line in the motionaudio.sh to use the hardware of your choice;
 5. Modify the '/etc/motion.conf' file installed from the motion application 
 ```
   target_dir /path/to/motion/videos
-  movie_filename %m-%d-%Y_%H:%M:%S
-  on_event_start /bin/bash /usr/bin/motionaudio.sh startaudio %m-%d-%Y_%H:%M:%S
-  on_event_end  /bin/bash /usr/bin/motionaudio.sh stopaudio
-  on_camera_lost /bin/bash /usr/bin/motionaudio.sh enablecam
+  movie_filename %Y%m%d_%H%M%S
+  on_event_start /bin/bash /usr/bin/motionaudio.sh StartAudioCapture %Y%m%d_%H%M%S
+  on_event_end  /bin/bash /usr/bin/motionaudio.sh StopAudioCapture
+  on_camera_lost /bin/bash /usr/bin/motionaudio.sh EnableWebCam
 ```
   
 # To start motion with audio
-```/bin/bash /usr/bin/motionaudio.sh startmotion```
+```/bin/bash /usr/bin/motionaudio.sh StartMotion```
 
 # To stop motion with audio
-```/bin/bash /usr/bin/motionaudio.sh stopmotion```
+```/bin/bash /usr/bin/motionaudio.sh StopMotion```
 
-# Works on Ubuntu 18.04 
+# Works on Ubuntu 18.04 - 23.04
