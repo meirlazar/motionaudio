@@ -1,4 +1,6 @@
 #!/bin/bash
+### Make sure all dirs  and files have permissions set correctly to read or write to them. ###
+
 motdir="/etc/motion" # motion dir
 mediadir="/home/yourusername/motion" # where media will be stored, change this 
 
