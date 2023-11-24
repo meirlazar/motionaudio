@@ -1,51 +1,65 @@
 #!/bin/bash
 ### Make sure all dirs  and files have permissions set correctly to read or write to them. ###
 
+today=$(date +'%Y%m%d')
+
 # DIRS
-motdir="/etc/motion" # motion dir
-mediadir="/home/yourusername/motion" # where media will be stored, change this 
-SCRIPTDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) # i.e., /usr/local/scripts
-BASEDIR=${SCRIPTDIR%/*}  # i.e., /usr/local
+motdir="/etc/motion" # motion dir - do not change
+mediabasedir="${HOME}/media" # where media will be stored, change this to the location you want media files stored
+mediadir="${mediabasedir}/${today}"
+scriptdir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) # do not change
+basedir=${SCRIPTDIR%/*}   # do not change
 
 
 # FILES
-SCRIPTFILE=$(basename "$0") # i.e., motionaudio.sh
-motconffile="${motdir}/motion.conf" # motion conf file
-motlogfile='/var/log/motion/motion.log' # motion log file
-motpidfile='/var/run/motion/motion.pid' # motion pid file
+scriptfile=$(basename "$0")  # do not change
+motconffile="${motdir}/motion.conf" # motion conf file -  do not change
+motlogfile='/var/log/motion/motion.log' # motion log file -  do not change
+motpidfile='/var/run/motion/motion.pid' # motion pid file -  do not change
 apidfile="${mediadir}/arecord.pid" # arecord pidfile created when starting audio capture
-blfile='/etc/modprobe.d/blacklist.conf' # blacklist file for dev modules
+blfile='/etc/modprobe.d/blacklist.conf' # blacklist file for dev modules -  do not change
 debuglog="/var/log/motion/motionaudio.log" # debug log for this script if turned on
 
 
-webcam="$(find /dev -type c -iname "video[0-9]" | head -1)" # or choose your webcam device 
-mic="$(aplay -l | grep 'eMeet M0' | sed -E "s/^.*([0-9]):.*,.*([0-9]):.*$/\1,\2/g")" # use keyword for microphone device
+webcam="$(find /dev -type c -iname "video[0-9]" | head -1)" # finds the first available webcam, or choose your webcam device 
+mic="$(aplay -l | grep 'my microphone name' | sed -E "s/^.*([0-9]):.*,.*([0-9]):.*$/\1,\2/g")" # change the keyword for your microphone device
 
-action="$1"   # specify which action to take start, stop, merge, etc
-aname="$2"  # motion will provide 2nd param as timestamp which will be audio filename
+action="$1"   # specify which action to take start, stop, merge, etc  -  do not change
+aname="$2"  # motion will provide 2nd param as timestamp which will be audio filename -  do not change
 
-aext="wav" # change if you prefer a different audio format or extension
-vinext="avi" # change this to what is specified in the motion.conf file for the line ffmpeg_video_codec
-voutext="mkv" #change this to the video file type that will be created by joining the audio and video files
+aext="wav" # change if you prefer a different audio format
+vinext="avi" # change this to what is specified in the motion.conf file for the line ffmpeg_video_codec 
+voutext="mkv" # change this to the video file type that will be created by joining the audio and video files
 
 tz='-0500'  # specify your TZ , ie mine is -0500
 
-# motion.conf should have the following if using debug mode
-#target_dir /path/to/motion/videos
-#movie_filename %Y%m%d_%H%M%S
-#on_event_start /bin/bash -x /etc/motion/motionaudio.sh StartAudioCapture %Y%m%d_%H%M%S >> /var/log/motion/motionaudio.log 2>&1 
-#on_event_end  /bin/bash -x /etc/motion/motionaudio.sh StopAudioCapture >> /var/log/motion/motionaudio.log 2>&1 
-#on_camera_lost /bin/bash -x /etc/motion/motionaudio.sh EnableWebCam >> /var/log/motion/motionaudio.log 2>&1 
+############################################################################################################################
+cat << EOF
 
+# The /etc/motion/motion.conf file needs to be modified with the following, if running motionaudio in debug mode
 
-# motion.conf should have the following in normal mode
-#target_dir /path/to/motion/videos
-#movie_filename %Y%m%d_%H%M%S
-#on_event_start /bin/bash /etc/motion/motionaudio.sh StartAudioCapture %Y%m%d_%H%M%S
-#on_event_end  /bin/bash /etc/motion/motionaudio.sh StopAudioCapture
-#on_camera_lost /bin/bash /etc/motion/motionaudio.sh EnableWebCam
+target_dir /${HOME}/media/$(date +'%Y%m%d') # use same path as ${mediadir}
+movie_filename %Y%m%d_%H%M%S
+on_event_start /bin/bash -x /etc/motion/motionaudio.sh StartAudioCapture %Y%m%d_%H%M%S >> /var/log/motion/motionaudio.log 2>&1 
+on_event_end  /bin/bash -x /etc/motion/motionaudio.sh StopAudioCapture >> /var/log/motion/motionaudio.log 2>&1 
+on_camera_lost /bin/bash -x /etc/motion/motionaudio.sh EnableWebCam >> /var/log/motion/motionaudio.log 2>&1 
 
-########################################################################################################
+EOF
+############################################################################################################################
+
+cat << EOF
+
+# The /etc/motion/motion.conf file needs to be modified with the following, if running motionaudio in normal mode
+
+target_dir /${HOME}/media/$(date +'%Y%m%d') # use same path as ${mediadir}
+movie_filename %Y%m%d_%H%M%S
+on_event_start /bin/bash /etc/motion/motionaudio.sh StartAudioCapture %Y%m%d_%H%M%S
+on_event_end  /bin/bash /etc/motion/motionaudio.sh StopAudioCapture
+on_camera_lost /bin/bash /etc/motion/motionaudio.sh EnableWebCam
+
+EOF
+
+############################################################################################################################
 
 # optional function for first time run to make sure all deps are met
 function CHECKDEPS () {
@@ -99,8 +113,11 @@ function StartMotion () {
 	if [[ $(pgrep -a -if "motion -c ${motconffile}" 2> /dev/null) ]] || [[ $(pgrep -F ${motpidfile} 2> /dev/null) ]]; then
 		echo "FAIL - Motion process already started"; return; 
 	fi
+ # create todays subdir in $mediadir
+ test -d ${mediadir} || mkdir -p "${mediadir}"
+ 
 # start motion process
-	sudo nohup motion -c ${motconffile} > /dev/null 2>&1 & 
+	nohup motion -c ${motconffile} > /dev/null 2>&1 & 
 	newmotpid=${BASHPID}
 	if ! grep -q "${newmotpid}" ${motpidfile} 2> /dev/null; then echo "${newmotpid}" | sudo tee ${motpidfile}; fi
 # tail -f ${motlogfile} # uncomment for debugging
@@ -146,6 +163,37 @@ function MergeFiles () {
 	ffmpeg -y -i "${mediadir}/${vidin}" -i "${mediadir}/${audin}" -c:v copy -c:a copy "${mediadir}/${vidout}" ; 
 	if [[ -f "${mediadir}/${vidout}" ]]; then rm -f "${mediadir}/${vidin}" ; rm -f "${mediadir}/${audin}"; fi
 	return 0
+}
+
+########################################################################################################
+
+# USES FFMPEG TO MERGE VIDEO AND AUDIO FILES INTO 1 VIDEO FILE $vidout
+
+function MergeAllVidOutExceptTodays () {
+find "${mediabasedir}" -maxdepth 1 -type d  \( -iname "[0-9]*" ! -iname "${today}" \) -printf "%h %f\n" | while IFS= read -r x y; do
+   list="${x}/${y}/combinelist.txt"
+   combfile="${x}/${y}/combined_${x}.${voutext}"
+   
+   test -f "${list}" && rm -f "${list}" 
+   test -f "${combfile}" && continue
+   
+# create a list of files to merge into 1 video file for the day
+   find "${x}/${y}" -maxdepth 1 -type f \( -iname "*.${voutext}" ! -iname "*combine*" \) | sort -n | while read z; do 
+       echo "file '${z}'" 2> /dev/null >> "${list}" ;  
+   done
+   
+  # if it failed to create list, go to next dir
+   test -f "${list}" || continue
+
+  # if list only has 1 file, dont bother combining 
+   if [[ $(grep -vc "^$" <"${list}") -le 1 ]]; then rm -f "${list}"; continue; fi ;
+ 
+  # use ffmpeg to combine all files
+   ffmpeg -nostdin -f concat -safe 0 -i "${list}" -c copy "${combfile}"
+done 
+
+find "${mediabasedir}" -maxdepth 1 -type d -empty -delete
+return 0
 }
 
 ########################################################################################################
