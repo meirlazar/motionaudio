@@ -1,4 +1,4 @@
-# motion_with_audio_arecord
+# motionaudio - An add-on for motion that captures and merges audio recordings with motion captured videos
 
 # Purpose: 
 This project is a module or add-on to the popular Motion Detection and recording application called 'motion' (https://github.com/Motion-Project/motion). 
