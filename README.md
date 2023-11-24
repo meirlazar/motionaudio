@@ -1,13 +1,15 @@
 # motion_with_audio_arecord
 
 # Purpose: 
-This project uses the popular motion (https://github.com/Motion-Project/motion) (Motion Detection and recording) Linux application. 
-This project adds a separate audio recording process using 'arecord', that starts recording when the video recording process is initiated by motion
+This project is a module or add-on to the popular Motion Detection and recording application called 'motion' (https://github.com/Motion-Project/motion). 
+It adds a separate audio recording process using the applicaiotn 'arecord', that starts recording when the video recording process is initiated by motion.
 It also stops recording when the video recording process stops, terminated by motion. 
 Then the audio and video files are merged using ffmpeg into a single file (mkv or mp4).
 
-# Prereqs 
-1. Install motion, arecord, ffmpeg pgrep, pkill, v4l2-utils 
+Note: It only works with local webcams, it will not work with IPCams or POE Cameras or any other remote cameras.
+
+# Prerequisites
+1. Requires the folloowing packages to be installed: motion, arecord, ffmpeg pgrep, pkill, v4l2-utils. On ubuntu you use this command to install them;
 ```
 sudo apt update && sudo apt install -y motion alsa-utils procps v4l-utils
 ```
@@ -16,7 +18,7 @@ sudo apt update && sudo apt install -y motion alsa-utils procps v4l-utils
   - Update all the variables with your specific configuration
   - To find your available video recording devices, you can use the following command;
 ```
-v4l-utils --list-devices
+v4l-utils --list-devices 
 ```
 
 3. Optional: You can specify the microphone input hardware to use for the 'arecord' command line parameters.
