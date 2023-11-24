@@ -1,6 +1,10 @@
 # motion_with_audio_arecord
 
-# Purpose: This project uses the popular motion (Motion Detection and recording) Linux application. This project adds a separate audio recording process with arecord, that starts when the video recording proces starts, and when the video recording process stops, so does the audio. Then this application will combine the two files (audio and video) using ffmpeg into a single file (mkv or mp4).
+# Purpose: 
+This project uses the popular motion (https://github.com/Motion-Project/motion) (Motion Detection and recording) Linux application. 
+This project adds a separate audio recording process using 'arecord', that starts recording when the video recording process is initiated by motion
+It also stops recording when the video recording process stops, terminated by motion. 
+Then the audio and video files are merged using ffmpeg into a single file (mkv or mp4).
 
 # Prereqs 
 1. Install motion, arecord, ffmpeg pgrep, pkill, v4l2-utils 
