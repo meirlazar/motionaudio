@@ -15,13 +15,19 @@ sudo apt update && sudo apt install -y motion alsa-utils procps v4l-utils
 3. Modify the motionaudio.sh 
   - Update all the variables with your specific configuration
   - To find your available video recording devices, you can use the following command;
-```v4l-utils --list-devices```
+```
+v4l-utils --list-devices
+```
 
 3. Optional: You can specify the microphone input hardware to use for the 'arecord' command line parameters.
    - To find what microphone input hardware you have installed, you can use this command; 
-```aplay  --list-devices``` 
+```
+aplay  --list-devices
+``` 
 Then change this line in the motionaudio.sh to use the hardware of your choice;
-```/usr/bin/arecord -f cd -r 22050 -D plughw:2,0 ```
+```
+/usr/bin/arecord -f cd -r 22050 -D plughw:2,0
+```
 
 5. Download or Copy the file in this project 'motionaudio.sh' file to /usr/bin/ and make it executable
 ```
@@ -39,9 +45,13 @@ sudo chmod +x /usr/bin/motionaudio.sh
 ```
   
 7. Then when your ready to start using motion - instead of running motion directly, use the following command; 
-```/bin/bash /usr/bin/motionaudio.sh StartMotion```
+```
+/bin/bash /usr/bin/motionaudio.sh StartMotion
+```
 
-8. To terminate motion (and the audio) - instead of killign motion directly, use the following command; 
-```/bin/bash /usr/bin/motionaudio.sh StopMotion```
+9. To terminate motion (and the audio) - instead of killign motion directly, use the following command; 
+```
+/bin/bash /usr/bin/motionaudio.sh StopMotion
+```
 
 Note: Works on Ubuntu 18.04 - 23.04
