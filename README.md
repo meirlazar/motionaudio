@@ -44,12 +44,12 @@ sudo chmod +x /usr/bin/motionaudio.sh
   on_camera_lost /bin/bash /usr/bin/motionaudio.sh EnableWebCam
 ```
   
-7. Then when your ready to start using motion - instead of running motion directly, use the following command; 
+7. Then when your ready to start using motion - instead of running motion process directly, use the following command; 
 ```
 /bin/bash /usr/bin/motionaudio.sh StartMotion
 ```
 
-9. To terminate motion (and the audio) - instead of killign motion directly, use the following command; 
+9. To terminate motion (and the audio) - instead of killing the motion process directly, use the following command; 
 ```
 /bin/bash /usr/bin/motionaudio.sh StopMotion
 ```
