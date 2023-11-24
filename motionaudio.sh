@@ -34,8 +34,7 @@ voutext="mkv" # change this to the video file type that will be created by joini
 tz='-0500'  # specify your TZ , ie mine is -0500
 
 ############################################################################################################################
-cat << EOF
-
+: << 'EOF'
 # The /etc/motion/motion.conf file needs to be modified with the following, if running motionaudio in debug mode
 
 target_dir /${HOME}/media/$(date +'%Y%m%d') # use same path as ${mediadir}
@@ -44,10 +43,8 @@ on_event_start /bin/bash -x /etc/motion/motionaudio.sh StartAudioCapture %Y%m%d_
 on_event_end  /bin/bash -x /etc/motion/motionaudio.sh StopAudioCapture >> /var/log/motion/motionaudio.log 2>&1 
 on_camera_lost /bin/bash -x /etc/motion/motionaudio.sh EnableWebCam >> /var/log/motion/motionaudio.log 2>&1 
 
-EOF
-############################################################################################################################
 
-cat << EOF
+############################################################################################################################
 
 # The /etc/motion/motion.conf file needs to be modified with the following, if running motionaudio in normal mode
 
