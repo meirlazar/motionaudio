@@ -45,7 +45,7 @@ sudo chmod +x /usr/bin/motionaudio.sh
   on_event_end  /bin/bash /usr/bin/motionaudio.sh StopAudioCapture
   on_camera_lost /bin/bash /usr/bin/motionaudio.sh EnableWebCam
 ```
-  
+# Running motionaudio
 7. Then when your ready to start using motion - instead of running motion process directly, use the following command; 
 ```
 /bin/bash /usr/bin/motionaudio.sh StartMotion
