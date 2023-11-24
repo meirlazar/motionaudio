@@ -231,6 +231,7 @@ StopMotion )
 StartAudioCapture ) StartAudioCapture ;;
 StopAudioCapture ) StopAudioCapture & wait ; GetFilesToProcess ;;
 Merge ) GetFilesToProcess ;;
+MergeAll ) MergeAllVidOutExceptTodays ;;
 esac
 
 ########################################################################################################
