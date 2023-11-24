@@ -1,9 +1,15 @@
 #!/bin/bash
 ### Make sure all dirs  and files have permissions set correctly to read or write to them. ###
 
+# DIRS
 motdir="/etc/motion" # motion dir
 mediadir="/home/yourusername/motion" # where media will be stored, change this 
+SCRIPTDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) # i.e., /usr/local/scripts
+BASEDIR=${SCRIPTDIR%/*}  # i.e., /usr/local
 
+
+# FILES
+SCRIPTFILE=$(basename "$0") # i.e., motionaudio.sh
 motconffile="${motdir}/motion.conf" # motion conf file
 motlogfile='/var/log/motion/motion.log' # motion log file
 motpidfile='/var/run/motion/motion.pid' # motion pid file
@@ -45,9 +51,24 @@ tz='-0500'  # specify your TZ , ie mine is -0500
 function CHECKDEPS () {
 # check deps
 reqbins="ffmpeg arecord motion pgrep pkill"
-for x in "${reqbins}"; do
-	if ! which ${x} > /dev/null 2>&1; then echo "${x} not installed. Please install and run script again"; exit 10; fi
-done
+for x in "${reqbins}"; do if ! which ${x} > /dev/null 2>&1; then echo "${x} not installed. Please install and run script again"; exit 10; fi ; done
+
+i=0 ;
+while read var; do [ -z "${!var}" || ! -s "${!var}" || ! -rw  "${!var}" ] && { echo "$var is empty, not set, or does not have rw perms. Exiting.."; let i=i+1; }
+done << EOF
+SCRIPTFILE
+motconffile
+motlogfile
+EOF
+
+while read var; do [ -z "${!var}" || ! -d "${!var}" || ! -rw  "${!var}" ] && { echo "$var is empty, not set, or does not have rw perms. Exiting.."; let i=i+1; }
+done << EOF
+motdir
+mediadir
+SCRIPTDIR
+EOF
+
+if [ $i -gt 0 ]; then echo $i; echo "exiting"; exit 1; fi
 }
 
 ########################################################################################################
