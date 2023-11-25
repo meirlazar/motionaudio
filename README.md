@@ -14,36 +14,36 @@ Note: It only works with local webcams, it will not work with IPCams or POE Came
 sudo apt update && sudo apt install -y motion alsa-utils procps v4l-utils
 ```
 
-3. Modify the motionaudio.sh 
+2. Modify the motionaudio.sh 
   - Update all the variables with your specific configuration
   - To find your available video recording devices, you can use the following command;
 ```
 v4l-utils --list-devices 
 ```
 
-4. Optional: You can specify the microphone input hardware to use for the 'arecord' command line parameters.
+Optional: You can specify the microphone input hardware to use for the 'arecord' command line parameters.
    - To find what microphone input hardware you have installed, you can use this command; 
 ```
 aplay  --list-devices
 ``` 
-5. Then change this line in the motionaudio.sh to use the hardware of your choice;
+3.. Then change this line in the motionaudio.sh to use the hardware of your choice;
 ```
 /usr/bin/arecord -f cd -r 22050 -D plughw:2,0
 ```
 
-6. Download or Copy the file in this project 'motionaudio.sh' file to /usr/bin/ and make it executable
+4. Download or Copy the file in this project 'motionaudio.sh' file to /usr/bin/ and make it executable
 ```
 sudo cp ./motionaudio.sh /usr/bin/
 sudo chmod +x /usr/bin/motionaudio.sh
 ```
 
 # Running motionaudio
-7. Then when your ready to start using motion - instead of running motion process directly, use the following command; 
+5. Then when your ready to start using motion - instead of running motion process directly, use the following command; 
 ```
 /bin/bash /usr/bin/motionaudio.sh StartMotion
 ```
 
-8. To terminate motion (and the audio) - instead of killing the motion process directly, use the following command; 
+6. To terminate motion (and the audio) - instead of killing the motion process directly, use the following command; 
 ```
 /bin/bash /usr/bin/motionaudio.sh StopMotion
 ```
