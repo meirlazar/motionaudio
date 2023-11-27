@@ -204,7 +204,7 @@ StopMotion )
 	StopCapture ; 
 	GetFilesToProcess ;
 	MergePreviousVids ;;	
-StartCapture ) StartCapture ;;
+StartCapture ) StopCapture; StartCapture ;;
 StopCapture ) StopCapture & wait ; GetFilesToProcess ;;
 Merge ) GetFilesToProcess ;;
 MergeAll ) MergePreviousVids ;;
