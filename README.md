@@ -4,7 +4,7 @@
 This project is a module or add-on to the popular Motion Detection and recording application called 'motion' (https://github.com/Motion-Project/motion). 
 It adds a separate audio recording process using the applicaiotn 'arecord', that starts recording when the video recording process is initiated by motion.
 It also stops recording when the video recording process stops, terminated by motion. 
-Then the audio and video files are merged using ffmpeg into a single file (mkv or mp4).
+Then the audio and video files are merged using ffmpeg into a single file (mkv, avi, flv, or mp4).
 
 Note: It only works with local webcams, it will not work with IPCams or POE Cameras or any other remote cameras.
 
